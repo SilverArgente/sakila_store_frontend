@@ -12,7 +12,7 @@ function Content( { title, data }) {
 
   return (
 
-    <div className='content'>
+    <div className='content' >
 
         <h1>Trending Top 5: {title}</h1>
         

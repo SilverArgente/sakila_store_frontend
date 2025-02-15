@@ -1,0 +1,12 @@
+button {
+    font-size: 20px;
+    text-align: left;
+    margin-left: 50px;
+    margin-top: 10px;
+    transition: color 0.3s;
+    border: none;
+}
+
+button:hover {
+    color: #ED1C24;
+}

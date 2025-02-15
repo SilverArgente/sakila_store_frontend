@@ -1,14 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import '../css/item.css'
+import '../css/Item.css'
+import Details from './Details.js'
 
 function Item( { name } ) {
+
+  const [detailState, setDetailState] = useState(false)
+  const [infoSet, setInfoSet] = useState('')
+
+  function changeDetailState() {
+    setDetailState(!detailState)
+  }
+
+  function assignInfoSet(set) {
+    setInfoSet(set)
+  }
+
+  const displayDetails = () => {
+    changeDetailState()
+  }
 
   return (
 
     <div className='item'>
 
-        <p>{name}</p>
-
+        <button onClick={displayDetails}>{name}</button>
+        {detailState ? <Details /> : null}
     </div>
 
   )

@@ -8,7 +8,7 @@ function App() {
   const [data, setData] = useState([{}])
 
   useEffect(() => {
-    fetch("/top_5_films").then(
+    fetch("/top_5").then(
       res => res.json()
     ).then(
       data => {
@@ -25,7 +25,7 @@ function App() {
 
       <Navbar> </Navbar>
       
-      <Content title={'Films'} data={list} />
+      <Content title={'Films'} data={list}  />
 
       <Content title={'Actors'} data={list} />
 
