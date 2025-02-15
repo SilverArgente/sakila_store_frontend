@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import '../css/App.css'
 import Navbar from './Navbar.js'
 import Content from './Content.js'
 
@@ -7,7 +8,7 @@ function App() {
   const [data, setData] = useState([{}])
 
   useEffect(() => {
-    fetch("/members").then(
+    fetch("/top_5_films").then(
       res => res.json()
     ).then(
       data => {
@@ -17,14 +18,16 @@ function App() {
     )
   }, [])
 
+  const list = ['ryan', 'eric', 'eric', 'eric', 'eric']
+
   return (
-    <div className='page'>
+    <div className='App' >
 
       <Navbar> </Navbar>
+      
+      <Content title={'Films'} data={list} />
 
-      <div className='content'>
-
-      </div>
+      <Content title={'Actors'} data={list} />
 
     </div>
   )
