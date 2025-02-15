@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import Navbar from './Navbar.js'
+import Content from './Content.js'
 
 function App() {
 
@@ -16,7 +18,13 @@ function App() {
   }, [])
 
   return (
-    <div>
+    <div className='page'>
+
+      <Navbar> </Navbar>
+
+      <div className='content'>
+
+      </div>
 
     </div>
   )
