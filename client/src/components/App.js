@@ -6,6 +6,10 @@ import Content from './Content.js'
 function App() {
 
   const [data, setData] = useState([{}])
+  const [films, setFilms] = useState([])
+  const [actors, setActors] = useState([])
+  const [filmNames, setFilmNames] = useState([])
+  const [actorNames, setActorNames] = useState([])
 
   useEffect(() => {
     fetch("/top_5").then(
@@ -13,21 +17,34 @@ function App() {
     ).then(
       data => {
         setData(data)
-        console.log(data)
+
+        setFilms(data["top_films"])
+        setActors(data["top_actors"])
+
+        setFilmNames([ data["top_films"][0]["title"], data["top_films"][1]["title"], data["top_films"][2]["title"], data["top_films"][3]["title"], data["top_films"][4]["title"] ])
+        
+        setActorNames([ data["top_actors"][0]["first_name"] + " " + data["top_actors"][0]["last_name"],
+                       data["top_actors"][1]["first_name"] + " " + data["top_actors"][1]["last_name"], 
+                       data["top_actors"][2]["first_name"] + " " + data["top_actors"][2]["last_name"], 
+                       data["top_actors"][3]["first_name"] + " " + data["top_actors"][3]["last_name"], 
+                       data["top_actors"][4]["first_name"] + " " + data["top_actors"][4]["last_name"] ])
+
+          console.log(data)
       }
     )
+
   }, [])
 
-  const list = ['ryan', 'eric', 'eric', 'eric', 'eric']
+  
 
   return (
     <div className='App' >
 
       <Navbar> </Navbar>
       
-      <Content title={'Films'} data={list}  />
+      <Content title={'Films'} data={films} names={filmNames}  />
 
-      <Content title={'Actors'} data={list} />
+      <Content title={'Actors'} data={actors} names={actorNames} />
 
     </div>
   )

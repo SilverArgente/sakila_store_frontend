@@ -2,13 +2,19 @@ import React, { useState, useEffect } from 'react'
 import '../css/content.css'
 import Item from './Item.js'
 
-function Content( { title, data }) {
+function Content( { title, data, names }) {
 
-    const name_one = (data ?? [])[0]
-    const name_two = (data ?? [])[1]
-    const name_three = (data ?? [])[2]
-    const name_four = (data ?? [])[3]
-    const name_five = (data ?? [])[4]
+  useEffect(() => {
+
+          console.log(data)
+  
+    
+  
+    }, [])
+
+    let a = 'a'
+
+
 
   return (
 
@@ -16,11 +22,11 @@ function Content( { title, data }) {
 
         <h1>Trending Top 5: {title}</h1>
         
-        <Item name={name_one}></Item>
-        <Item name={name_two}></Item>
-        <Item name={name_three}></Item>
-        <Item name={name_four}></Item>
-        <Item name={name_five}></Item>
+        <Item name={names?.[0]}></Item>
+        <Item name={names?.[1]}></Item>
+        <Item name={names?.[2]}></Item>
+        <Item name={names?.[3]}></Item>
+        <Item name={names?.[4]}></Item>
 
     </div>
 
