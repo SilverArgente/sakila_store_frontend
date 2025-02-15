@@ -6,10 +6,14 @@ import Content from './Content.js'
 function App() {
 
   const [data, setData] = useState([{}])
+
   const [films, setFilms] = useState([])
   const [actors, setActors] = useState([])
+  const [actorFilms, setActorFilms] = useState([])
+
   const [filmNames, setFilmNames] = useState([])
   const [actorNames, setActorNames] = useState([])
+  
 
   useEffect(() => {
     fetch("/top_5").then(
@@ -29,7 +33,10 @@ function App() {
                        data["top_actors"][3]["first_name"] + " " + data["top_actors"][3]["last_name"], 
                        data["top_actors"][4]["first_name"] + " " + data["top_actors"][4]["last_name"] ])
 
-          console.log(data)
+        setActorFilms([ data["top_actor_films"][0], data["top_actor_films"][1], data["top_actor_films"][2], data["top_actor_films"][3], data["top_actor_films"][4] ])
+
+        console.log(data)
+
       }
     )
 
@@ -44,7 +51,7 @@ function App() {
       
       <Content title={'Films'} data={films} names={filmNames}  />
 
-      <Content title={'Actors'} data={actors} names={actorNames} />
+      <Content title={'Actors'} data={actors} actor_films={actorFilms} names={actorNames} />
 
     </div>
   )
