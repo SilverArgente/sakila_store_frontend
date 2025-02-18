@@ -1,0 +1,54 @@
+.content {
+	display: flex; 
+	flex-direction: column;
+}
+
+.search {
+	margin: 0;
+	padding: 0;	
+}
+
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid #020100;
+  float: left;
+  margin: 20px 0 0 0;
+}
+
+/* Style the submit button */
+form.example button {
+  padding: 10px;
+  margin: 20px 0 0 0;
+  background: #F1D302;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none; /* Prevent double borders */
+  cursor: pointer;
+}
+
+form.example button:hover {
+  background: #ED1C24;
+}
+
+/* Clear floats */
+form.example::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+select {
+  border: 2px solid #F1D302;
+  padding: 10px 40px 10px 15px;
+  margin: 0;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.searchBy p
+{
+	margin: 0;
+	margin-top: 15px;
+}
