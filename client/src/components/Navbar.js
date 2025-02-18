@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import '../css/navbar.css'
 
-function App() {
-
+function Navbar( {setPageState} ) {
+  
   return (
     <div className='page'>
 
@@ -10,9 +10,9 @@ function App() {
         
         <p className='logo'>Sakila Store</p>
         <ul>
-          <li><a>Home</a></li>
-          <li><a>Films</a></li>
-          <li><a>Customers</a></li>
+          <li><a onClick={(e) => setPageState("home")} >Home</a></li>
+          <li><a onClick={(e) => setPageState("films")} >Films</a></li>
+          <li><a onClick={(e) => setPageState("customers")} >Customers</a></li>
         </ul>
 
       </div>
@@ -21,4 +21,4 @@ function App() {
   )
 }
 
-export default App
+export default Navbar

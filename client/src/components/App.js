@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import '../css/App.css'
 import Navbar from './Navbar.js'
 import Content from './Content.js'
+import Films from './Films.js'
+import Customers from './Customers.js'
 
 function App() {
 
@@ -13,7 +15,8 @@ function App() {
 
   const [filmNames, setFilmNames] = useState([])
   const [actorNames, setActorNames] = useState([])
-  
+ 
+  const [pageState, setPageState] = useState("home")
 
   useEffect(() => {
     fetch("/top_5").then(
@@ -42,17 +45,37 @@ function App() {
 
   }, [])
 
+   const renderComponent = () => {
+    switch (pageState) {
+      case "home":
+        return (<div >
+                <Content title={'Films'} data={films} names={filmNames}  />
+                <Content title={'Actors'} data={actors} actor_films={actorFilms} names={actorNames} />
+               </div> 
+               );
+      case "films":
+        return <Films />;
+      case "customers":
+        return <Customers />;
+      default:
+        return (<div >
+                <Content title={'Films'} data={films} names={filmNames}  />
+                <Content title={'Actors'} data={actors} actor_films={actorFilms} names={actorNames} />
+               </div> 
+               );
+    }
+  };
+
   
+  
+
 
   return (
     <div className='App' >
 
-      <Navbar> </Navbar>
+      <Navbar setPageState={setPageState} > </Navbar>
+      <div>{renderComponent()}</div>
       
-      <Content title={'Films'} data={films} names={filmNames}  />
-
-      <Content title={'Actors'} data={actors} actor_films={actorFilms} names={actorNames} />
-
     </div>
   )
 }

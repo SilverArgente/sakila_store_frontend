@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import '../css/Item.css'
+import '../css/item.css'
 import Details from './Details.js'
 
 function Item( { name, data, attributes, itemNum, actor_films } ) {
