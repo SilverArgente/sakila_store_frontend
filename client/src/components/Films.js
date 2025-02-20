@@ -8,7 +8,7 @@ function Films({ title }) {
   const [data, setData] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
-  const attributes = ['description', 'release_year', 'rating', 'special_features', 'rented']
+  const attributes = ['description', 'release_year', 'rating', 'special_features', 'copies']
   
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);

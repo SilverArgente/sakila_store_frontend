@@ -26,6 +26,9 @@ function Details( { data, itemNum, attributes, actor_films } ) {
             case "title":
               attribute_headers[i] = ""
               break;
+			case "copies":
+              attribute_headers[i] = "Available Copies: "
+              break;
             default:
               attribute_headers[i] = "Header"
           }

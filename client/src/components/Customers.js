@@ -5,7 +5,7 @@ import "../css/customers.css";
 function Customer({ customer }) {
   return (
     <div className="customer-item">
-      <h3>{customer.first_name} {customer.last_name}</h3>
+      <h3>{customer.customer_id}. {customer.first_name} {customer.last_name}, {customer.email}</h3>
     </div>
   );
 }
