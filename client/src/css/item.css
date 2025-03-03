@@ -9,4 +9,5 @@ button {
 
 button:hover {
     color: #ED1C24;
+	cursor: pointer;
 }

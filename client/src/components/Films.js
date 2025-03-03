@@ -51,14 +51,14 @@ function Films({ title }) {
       return <p>No results available.</p>;
     }
 
-    console.log(data); // This should show the array with film objects
+    
 
     return (
       <div className="films-list">
       {data.map((film, index) => (
         <Item
           itemNum={index}
-          name={film.title}          // Ensure the title is passed correctly
+          name={film.title}          
           attributes={attributes}
           data={data}
         />
@@ -72,7 +72,7 @@ function Films({ title }) {
   return (
     <div className="content">
       <div className="search" style={{ display: "inline-flex" }}>
-        <h1>Search films: {title}</h1>
+        <h1>Search films:</h1>
         <form className="example" onSubmit={handleSubmit}>
           <input
             type="text"
