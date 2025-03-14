@@ -8,6 +8,18 @@
 	padding: 0;	
 }
 
+.example {
+  padding-left: 20px;
+}
+
+.searchBy {
+  padding-left: 20px;
+}
+
+.searchBy p {
+  padding-right: 20px;
+}
+
 form.example input[type=text] {
   padding: 10px;
   font-size: 17px;
