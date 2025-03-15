@@ -216,7 +216,7 @@ function Customers() {
         if (response.ok) {
           const addedCustomer = await response.json();
           // Directly update the list by appending the new customer
-          setCustomers((prevCustomers) => [...prevCustomers, {customer_id: 600, first_name: first_name, last_name, last_name, email: email}]);
+          setCustomers((prevCustomers) => [...prevCustomers, {first_name: first_name, last_name, last_name, email: email}]);
 
           setAddingUser(false); // Hide the form after successful submission
           setNewCustomer({ first_name: '', last_name: '', email: '' }); // Reset form fields
