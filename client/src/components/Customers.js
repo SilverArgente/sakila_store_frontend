@@ -3,7 +3,7 @@ import ReactPaginate from "react-paginate";
 import "../css/customers.css";
 import Item from "./Item.js";
 
-function Customer({ customer, onDelete, onReturnRental, onEditCustomer }) {
+function Customer({ customer, onDelete, onReturnRental, onEditCustomer, rentals }) {
   const [isDetailsVisible, setIsDetailsVisible] = useState(false);
   const [rentalId, setRentalId] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -36,7 +36,7 @@ function Customer({ customer, onDelete, onReturnRental, onEditCustomer }) {
   };
 
   return (
-    <div className="customer-item">
+    <div className="customer-item" id={customer.customer_id}>
       <h3 onClick={toggleDetails}>
         {customer.customer_id}. {customer.first_name} {customer.last_name}, {customer.email}
       </h3>
@@ -72,13 +72,13 @@ function Customer({ customer, onDelete, onReturnRental, onEditCustomer }) {
             </div>
           ) : (
             <>
-              {customer.rentals && customer.rentals.length > 0 ? (
+              {rentals && rentals.length > 0 ? (
                 <div className="rentals">
                   <h4>Rentals:</h4>
                   <ul>
-                    {customer.rentals.map((rental) => (
-                      <li key={rental.rental_id}>
-                        {rental.rental_id}: {rental.movie_title} (Rented on {rental.rental_date})
+                    {rentals.map((rental) => (
+                      <li key={rental.title}>
+                        {rental.title}
                       </li>
                     ))}
                   </ul>
@@ -109,6 +109,7 @@ function Customer({ customer, onDelete, onReturnRental, onEditCustomer }) {
 
 function Customers() {
   const [customers, setCustomers] = useState([]);
+  const [rentals, setRentals] = useState([]);
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
@@ -130,18 +131,7 @@ function Customers() {
         const response = await fetch("http://localhost:5000/customers");
         if (response.ok) {
           const data = await response.json();
-          // Assuming your API returns customer data without rentals, you can fetch rentals separately
-          const customersWithRentals = await Promise.all(
-            data.map(async (customer) => {
-              const rentalResponse = await fetch(`http://localhost:5000/customers/${customer.customer_id}/rentals`);
-              if (rentalResponse.ok) {
-                const rentals = await rentalResponse.json();
-                return { ...customer, rentals };
-              }
-              return customer; // If rentals are not found, just return customer without rentals
-            })
-          );
-          setCustomers(customersWithRentals);
+          setCustomers(data);
         } else {
           console.error("Failed to fetch customers");
         }
@@ -208,20 +198,26 @@ function Customers() {
   const handleAddCustomer = async (e) => {
     e.preventDefault();
     const { first_name, last_name, email } = newCustomer;
-
+  
     if (first_name && last_name && email) {
       try {
-        const response = await fetch("http://localhost:5000/customers", {
+        const response = await fetch("http://localhost:5000/add_customer", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newCustomer),
+          body: JSON.stringify({
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+          }),
         });
-
+  
         if (response.ok) {
           const addedCustomer = await response.json();
-          setCustomers([...customers, addedCustomer]);
+          // Directly update the list by appending the new customer
+          setCustomers((prevCustomers) => [...prevCustomers, {customer_id: 600, first_name: first_name, last_name, last_name, email: email}]);
+
           setAddingUser(false); // Hide the form after successful submission
           setNewCustomer({ first_name: '', last_name: '', email: '' }); // Reset form fields
         } else {
@@ -234,6 +230,7 @@ function Customers() {
       console.error("Please fill in all fields");
     }
   };
+  
 
   const handleCancelAdd = () => {
     setAddingUser(false);
@@ -242,25 +239,26 @@ function Customers() {
 
   const handleDeleteCustomer = async (customerId) => {
     try {
-      const response = await fetch(`http://localhost:5000/customers/${customerId}`, {
+      const response = await fetch(`http://localhost:5000/delete_customer?id=${customerId}`, {
         method: "DELETE",
       });
-
-      if (response.ok) {
-        setCustomers(customers.filter((customer) => customer.customer_id !== customerId));
-      } else {
-        console.error("Failed to delete customer");
-      }
+      
     } catch (error) {
       console.error("Error deleting customer:", error);
     }
+
+    setCustomers((prevCustomers) => prevCustomers.filter(customer => customer.customer_id !== customerId));
+
   };
+  
 
   const handleReturnRental = async (customerId, rentalId) => {
     try {
       const response = await fetch(`http://localhost:5000/customers/${customerId}/rentals/${rentalId}/return`, {
         method: "PUT",
       });
+
+      alert("Movie successfully returned. Rental id: " + rentalId)
 
       if (response.ok) {
         console.log(`Rental ${rentalId} returned successfully.`);
@@ -274,7 +272,7 @@ function Customers() {
 
   const handleEditCustomer = async (editedCustomer) => {
     try {
-      const response = await fetch(`http://localhost:5000/customers/${editedCustomer.customer_id}`, {
+      const response = await fetch(`http://localhost:5000/edit_customer?id=${editedCustomer.customerId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -282,20 +280,38 @@ function Customers() {
         body: JSON.stringify(editedCustomer),
       });
 
-      if (response.ok) {
-        const updatedCustomer = await response.json();
-        setCustomers(customers.map((customer) => 
-          customer.customer_id === updatedCustomer.customer_id ? updatedCustomer : customer
-        ));
-        console.log("Customer updated successfully.");
-      } else {
-        console.error("Failed to update customer");
-      }
+      
+      const updatedCustomer = editedCustomer
+      setCustomers(customers.map((customer) => 
+        customer.customer_id === updatedCustomer.customer_id ? updatedCustomer : customer
+      ));
+      console.log("Customer updated successfully.");
     } catch (error) {
       console.error("Error updating customer:", error);
     }
   };
 
+  /*const getRentals = async (customer) => {
+    try {
+      const response = await fetch(`http://localhost:5000/a/${customer.customer_id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const rentals = await response.json();
+        setRentals(rentals)
+        console.log(rentals)
+      } else {
+        console.error("Failed to get rentals for customer");
+      }
+    } catch (error) {
+      console.error("Error getting rentals for customer:", error);
+    }
+  };
+*/
   return (
     <div id="container" className="customers-container">
       <div className="customer_search" style={{ display: "inline-flex" }}>
@@ -366,6 +382,7 @@ function Customers() {
             onDelete={handleDeleteCustomer}
             onReturnRental={handleReturnRental}
             onEditCustomer={handleEditCustomer}
+
           />
         ))}
       </div>
